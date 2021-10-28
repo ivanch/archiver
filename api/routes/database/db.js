@@ -26,9 +26,6 @@ function readFromFile() {
             }
             db = JSON.parse(data);
         });
-    } else {
-        // write file
-        writeToFile(db);
     }
 }
 

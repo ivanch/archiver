@@ -11,8 +11,11 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use('/api', indexRouter);
 
-app.listen(3000, function () {
-  console.log('API running on port 3000!');
+// set static folder
+app.use('/data', express.static('data'));
+
+app.listen(4000, function () {
+  console.log('API running on port 4000!');
 });
 
 module.exports = app;

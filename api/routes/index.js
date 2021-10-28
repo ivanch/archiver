@@ -18,7 +18,7 @@ router.post('/screenshot/:replace?', async function(req, res, next) {
   // check if url is in database
   const exists = db.checkUrl(url);
   if (exists && replace === 'false') {
-    res.status().json({'error': 'URL already exists'});
+    res.status(404).json({'error': 'URL already exists'});
     return;
   }
 
@@ -40,18 +40,14 @@ router.get('/screenshot/:id', async function(req, res, next) {
 
   // check if url is in database
   const urlInfo = db.getUrlInfo(urlId);
-  console.log(urlInfo);
   if (!urlInfo) {
     res.status(404).json({'error': 'URL does not exist'});
     return;
   }
 
-  // return screenshot
-  const filename = urlInfo['filename'];
-  const screenshot = fs.readFileSync('./data/screenshots/' + filename + '.png');
-  res.writeHead(200, {'Content-Type': 'image/png'});
-  res.end(screenshot, 'binary');
-
+  // return screenshot filename
+  const filename = urlInfo.filename + '.png';
+  res.json({'path': '/data/screenshots/' + filename, 'title': urlInfo.title});
 });
 
 module.exports = router;
