@@ -16,7 +16,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # api related
-api/data/html/*
-api/data/pdf/*
-api/data/screenshots/*
-api/data/db*
+api/data/*

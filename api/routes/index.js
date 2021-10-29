@@ -18,14 +18,14 @@ router.post('/screenshot/:replace?', async function(req, res, next) {
   // check if url is in database
   const exists = db.checkUrl(url);
   if (exists && replace === 'false') {
-    res.status(404).json({'error': 'URL already exists'});
+    res.status(409).json({'message': 'URL already exists'});
     return;
   }
 
   await archiver.archiveUrl(url);
 
   // return ok
-  res.json({'screenshot': 'success'});
+  res.status(200).json({'message': 'success'});
 });
 
 // GET returns all urls in database
@@ -35,7 +35,7 @@ router.get('/urls', function(req, res, next) {
 });
 
 // GET returns a screenshot of a website
-router.get('/screenshot/:id', async function(req, res, next) {
+router.get('/screenshot/:id', function(req, res, next) {
   const urlId = req.params.id;
 
   // check if url is in database
@@ -48,6 +48,27 @@ router.get('/screenshot/:id', async function(req, res, next) {
   // return screenshot filename
   const filename = urlInfo.filename + '.png';
   res.json({'path': '/data/screenshots/' + filename, 'title': urlInfo.title});
+});
+
+router.delete('/url/:id', function(req, res, next) {
+  const urlId = req.params.id;
+
+  // check if url is in database
+  const urlInfo = db.getUrlInfo(urlId);
+  if (!urlInfo) {
+    res.status(404).json({'error': 'URL does not exist'});
+    return;
+  }
+
+  // delete url from database
+  db.deleteUrl(urlId);
+
+  // delete screenshot file
+  const filename = urlInfo.filename + '.png';
+  fs.unlinkSync('./data/screenshots/' + filename);
+
+  // return ok
+  res.status(200).json({'delete': 'success'});
 });
 
 module.exports = router;

@@ -6,6 +6,15 @@ var db = {'urls': []};
 // load database from file if it exists
 readFromFile();
 
+const _getLastId = () => {
+    let lastId = 0;
+    if (db['urls'].length > 0) {
+        let lastIndex = db['urls'].length - 1
+        lastId = db['urls'][lastIndex]['id'];
+    }
+    return lastId;
+};
+
 // function to write to json file
 function writeToFile(data) {
     fs.writeFile('./data/db.json', JSON.stringify(data), function (err) {
@@ -32,7 +41,7 @@ function readFromFile() {
 // function to add new url to database with title, url, filename, and date
 function saveUrl(url, title, filename) {
     data = {
-        id: db['urls'].length,
+        id: _getLastId() + 1,
         title: title,
         url: url,
         filename: filename,
