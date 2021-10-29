@@ -1,4 +1,4 @@
-FROM node:lts-alpine as builder
+FROM node:lts-alpine
 
 # Build web interface
 WORKDIR /tmp
@@ -14,8 +14,9 @@ RUN cp -r /tmp/build . && \
 
 # Setup API
 COPY ./api/package* ./
-RUN npm install && make setup
+RUN npm install && apk add --no-cache make
 COPY ./api ./
+RUN make setup
 
 EXPOSE 4000
 
