@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  archiver:
+    image: archiver:latest
+    build: .
+    ports:
+      - "4001:4000"
