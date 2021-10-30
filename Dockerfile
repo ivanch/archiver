@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:lts-alpine as builder
 
 # Build web interface
 WORKDIR /tmp
@@ -7,10 +7,10 @@ RUN npm install
 COPY ./archiver ./
 RUN npm run build
 
+FROM node:lts-alpine
 # Setup API and web interface server
 WORKDIR /archiver
-RUN cp -r /tmp/build . && \
-    rm -rf /tmp/archiver
+COPY --from=builder ./tmp/build ./build
 
 # Setup API
 COPY ./api/package* ./
