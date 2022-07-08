@@ -38,7 +38,7 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/archiver:latest
-          platforms: linux/amd64
+          platforms: linux/amd64, linux/arm64
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
