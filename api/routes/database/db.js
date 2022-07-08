@@ -55,7 +55,7 @@ function saveUrl(url, title, filename) {
 
 // function to delete a url from database based on id
 function deleteUrl(id) {
-        for (var i = 0; i < db['urls'].length; i++) {
+    for (var i = 0; i < db['urls'].length; i++) {
         if (db['urls'][i]['id'] == id) {
             db['urls'].splice(i, 1);
         }

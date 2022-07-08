@@ -5,7 +5,10 @@ const db = require('../database/db');
 async function archiveUrl(url) {
     const filename = url.replace(/[^a-z0-9]/gi, '_').toLowerCase();
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      executablePath: '/usr/bin/chromium-browser',
+      args: ['--no-sandbox', '--headless']
+    });
     const page = await browser.newPage();
     await page.goto(url);
 

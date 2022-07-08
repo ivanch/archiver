@@ -6,6 +6,11 @@ const AddArchive = (props) => {
     const [message, setMessage] = React.useState("");
 
     const handleAdd = () => {
+        if (url.length === 0) {
+            setMessage("Please enter a URL!");
+            return;
+        }
+
         setMessage("Archiving...");
         axios.post("/api/screenshot", { url }, {timeout: 30000})
         .then(response => {

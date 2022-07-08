@@ -14,6 +14,7 @@ COPY --from=builder ./tmp/build ./build
 
 # Setup API
 COPY ./api/package* ./
+RUN apk add --no-cache  chromium --repository=http://dl-cdn.alpinelinux.org/alpine/v3.16/main
 RUN npm install && apk add --no-cache make
 COPY ./api ./
 RUN make setup

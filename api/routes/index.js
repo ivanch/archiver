@@ -15,6 +15,8 @@ router.post('/screenshot/:replace?', async function(req, res, next) {
   const url = req.body.url;
   const replace = req.params.replace || 'false';
 
+  console.log(`Taking screenshot of '${url}'`);
+
   // check if url is in database
   const exists = db.checkUrl(url);
   if (exists && replace === 'false') {
@@ -23,6 +25,8 @@ router.post('/screenshot/:replace?', async function(req, res, next) {
   }
 
   await archiver.archiveUrl(url);
+
+  console.log(`Screenshot of '${url}' taken`);
 
   // return ok
   res.status(200).json({'message': 'success'});
@@ -63,9 +67,9 @@ router.delete('/url/:id', function(req, res, next) {
   // delete url from database
   db.deleteUrl(urlId);
 
-  // delete screenshot file
-  const filename = urlInfo.filename + '.png';
-  fs.unlinkSync('./data/screenshots/' + filename);
+  fs.unlinkSync('./data/screenshots/' + urlInfo.filename + '.png');
+  fs.unlinkSync('./data/pdf/' + urlInfo.filename + '.pdf');
+  fs.unlinkSync('./data/html/' + urlInfo.filename + '.html');
 
   // return ok
   res.status(200).json({'delete': 'success'});
